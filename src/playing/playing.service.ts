@@ -43,24 +43,30 @@ export class PlayingService {
       const response: PlayingRes = {
         userId: userId,
         playerscore: currentScore,
-        highscore: 0,
+        highscore: getHighScore.high_score,
         winner: winner,
         bot: bot,
         player: playingChoosed,
       };
       return response;
     } catch (error) {
+      console.log(error);
       throw new HttpException("", 500, error);
     }
   }
 
   async getHighScore(): Promise<{ high_score: number }> {
-    const score: any = await this.playingRepo
-      .createQueryBuilder("playing")
-      .select(["MAX(playing.score) AS high_score, playing.*"])
-      .getOne();
+    const score = await this.playingRepo.find({
+      select: {
+        score: true,
+      },
+      order: {
+        score: "DESC",
+      },
+    });
+
     return {
-      high_score: score.high_score,
+      high_score: score[0].score,
     };
   }
 
@@ -77,7 +83,6 @@ export class PlayingService {
   }
 
   getWinner(playingChoosed: string) {
-    // mock random //
     const mockData: string[] = [
       PLAY_ACTION.ROCK,
       PLAY_ACTION.PAPER,

@@ -26,7 +26,7 @@ export class PlayingController {
       );
       return { status: "OK", data: retrunData };
     } catch (error) {
-      throw new HttpException("Cannot create user", 500, error);
+      throw new HttpException("error", 500, error);
     }
   }
 
@@ -36,7 +36,7 @@ export class PlayingController {
       const retrunData = await this.playingService.getHighScore();
       return { status: "OK", data: retrunData };
     } catch (error) {
-      throw new HttpException("Cannot create user", 500, error);
+      throw new HttpException("Cannot get high score", 500, error);
     }
   }
 
@@ -47,7 +47,7 @@ export class PlayingController {
       const retrunData = await this.playingService.getPlayerScore(userId);
       return { status: "OK", data: retrunData };
     } catch (error) {
-      throw new HttpException("Cannot create user", 500, error);
+      throw new HttpException("Cannot get player user", 500, error);
     }
   }
 }
