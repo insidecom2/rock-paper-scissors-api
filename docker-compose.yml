@@ -1,0 +1,32 @@
+version: "3"
+
+volumes:
+  postgres_data:
+    driver: local
+
+services:
+  postgres:
+    image: postgres
+    networks:
+      - postgres
+    volumes:
+      - postgres_data:/var/lib/postgres/data
+    environment:
+      POSTGRES_DB: db_test
+      POSTGRES_USER: root
+      POSTGRES_PASSWORD: 12345678
+    ports:
+      - 5432:5432
+
+  nestjs-api:
+    image: nestjs-api
+    networks:
+      - postgres
+    ports:
+      - 3000:3000
+    depends_on:
+      - postgres
+
+networks:
+  postgres:
+    driver: bridge
