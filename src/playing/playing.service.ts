@@ -66,7 +66,7 @@ export class PlayingService {
     });
 
     return {
-      high_score: score[0].score,
+      high_score: score[0] ? score[0].score : 0,
     };
   }
 
